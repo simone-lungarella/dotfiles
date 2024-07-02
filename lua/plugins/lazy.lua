@@ -17,20 +17,6 @@ vim.o.termguicolors = true
 
 require('lazy').setup({
   'onsails/lspkind.nvim',
-  -- Database
-  'kristijanhusak/vim-dadbod-ui',
-  'kristijanhusak/vim-dadbod-completion',
-  {
-    "tpope/vim-dadbod",
-    opt = true,
-    requires = {
-      "kristijanhusak/vim-dadbod-ui",
-      "kristijanhusak/vim-dadbod-completion",
-    },
-    config = function()
-      require("config.dadbod").setup()
-    end,
-  },
   "tpope/vim-surround",
   'xiyaowong/nvim-transparent',
   {
@@ -78,49 +64,25 @@ require('lazy').setup({
     },
   },
   {
-    "rcarriga/nvim-notify",
-    config = function()
-      require("notify").setup({
-        background_colour = "#000000",
-        enabled = false,
-      })
-    end
-  },
-  {
     "folke/noice.nvim",
     config = function()
       require("noice").setup({
         messages = {
-          enabled = true,        -- enables the Noice messages UI
-          view_error = false, -- view for errors
-          view_warn = false,  -- view for warnings
-          view_history = false,
-          view_search = false,
+          enabled = true,            -- enables the Noice messages UIlazy
+          view_error = "mini",       -- view for errors
+          view_warn = "mini",        -- view for warnings
+          view_history = "messages", -- view for :messages
+          view_search = false,       -- view for search count messages. Set to `false` to disable
         },
-        routes = {
-          {
-            filter = {
-              event = 'msg_show',
-              any = {
-                { find = '%d+L, %d+B' },
-                { find = '; after #%d+' },
-                { find = '; before #%d+' },
-                { find = '%d fewer lines' },
-                { find = '%d more lines' },
-              },
-            },
-            opts = { skip = true },
-          }
+        hover = {
+          enabled = true,
+          silent = false,
         },
       })
     end,
     dependencies = {
       -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
       "MunifTanjim/nui.nvim",
-      -- OPTIONAL:
-      --   `nvim-notify` is only needed, if you want to use the notification view.
-      --   If not available, we use `mini` as the fallback
-      "rcarriga/nvim-notify",
     }
   },
   { "catppuccin/nvim",      as = "catppuccin" },
@@ -143,7 +105,7 @@ require('lazy').setup({
     'hrsh7th/nvim-cmp',
     dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
   },
-  { -- Highlight, edit, and navigate code
+  {
     'nvim-treesitter/nvim-treesitter',
     build = function()
       pcall(require('nvim-treesitter.install').update { with_sync = true })
@@ -154,10 +116,10 @@ require('lazy').setup({
   },
   { "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
   'theHamsta/nvim-dap-virtual-text',
-  'nvim-lualine/lualine.nvim', -- Fancier statusline
+  'nvim-lualine/lualine.nvim',
   { "lukas-reineke/indent-blankline.nvim", main = "ibl",     opts = {} },
-  'numToStr/Comment.nvim',     -- "gc" to comment visual regions/lines
-  'tpope/vim-sleuth',          -- Detect tabstop and shiftwidth automatically
+  'numToStr/Comment.nvim',
+  'tpope/vim-sleuth',
 
   -- Fuzzy Finder (files, lsp, etc)
   { 'nvim-telescope/telescope.nvim',       branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } },

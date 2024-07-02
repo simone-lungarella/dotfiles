@@ -4,40 +4,26 @@ if vim.g.borderStyle == "rounded" then
   borderChars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
 end
 
-local smallLayout = { horizontal = { width = 0.6, height = 0.4 } }
-local specialDirs = {
-  "%.git/",
-  "addons/"       -- godot plugins
-}
+local smallLayout = { horizontal = { width = 0.6, height = 0.6 } }
 
 require("telescope").setup {
   defaults = {
     path_display = { "tail" },
-    selection_caret = " ",
+    selection_caret = "  ",
     prompt_prefix = "",
     multi_icon = "󰒆 ",
     results_title = false,
     prompt_title = false,
     dynamic_preview_title = true,
     borderchars = borderChars,
+    preview = false,
     cycle_layout_list = {
       "horizontal",
       { previewer = false, layout_strategy = "horizontal", layout_config = smallLayout },
     },
     layout_strategy = "horizontal",
     sorting_strategy = "ascending", -- so layout is consistent with prompt_position "top"
-    layout_config = {
-      horizontal = {
-        height = 0.4,
-        width = 0.6,
-      },
-      vertical = {
-        mirror = true,
-        height = 0.4,
-        width = 0.4,
-        anchor = "S",
-      },
-    },
+    layout_config = smallLayout,
     vimgrep_arguments = {
       "rg",
       "--no-config",
@@ -46,19 +32,13 @@ require("telescope").setup {
       "--trim",
       ("--ignore-file=" .. vim.fs.normalize("~/.config/rg/ignore")),
     },
-    -- stylua: ignore
     file_ignore_patterns = {
       "%.png$", "%.svg", "%.gif", "%.icns", "%.jpe?g",
-      "%.zip", "%.pdf",
-      unpack(specialDirs), -- needs to be last for correct unpacking
+      "%.zip", "%.pdf", "%.git/", "addons/"
     },
   },
   pickers = {
     find_files = {
-      -- INFO using `rg` instead of `fd` ensures that initially, the list
-      -- of files is sorted by recently modified files. (`fd` does not
-      -- have a `--sort` flag.)
-      -- alternative approach: https://github.com/nvim-telescope/telescope.nvim/issues/2905
       find_command = {
         "rg",
         "--no-config",
@@ -67,11 +47,11 @@ require("telescope").setup {
         ("--ignore-file=" .. vim.fs.normalize("~/.config/rg/ignore")),
       },
       path_display = { "filename_first" },
-      layout_config = smallLayout, -- use small layout, toggle via <D-p>
+      layout_config = smallLayout,
     },
     live_grep = {
-      prompt_prefix = "",
       disable_coordinates = true,
+      preview = true,
       layout_config = { horizontal = { preview_width = 0.6 } },
     },
   },
@@ -122,7 +102,6 @@ vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>sb', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
 vim.keymap.set('n', '<leader>sS', require('telescope.builtin').git_status, { desc = '' })
-vim.keymap.set("n", "<Leader>sn", "<CMD>lua require('telescope').extensions.notify.notify()<CR>")
 
 vim.api.nvim_set_keymap("n", "st", ":TodoTelescope<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<Leader><tab>", "<Cmd>lua require('telescope.builtin').commands()<CR>", { noremap = false })
