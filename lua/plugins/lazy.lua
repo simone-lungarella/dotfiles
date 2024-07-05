@@ -12,31 +12,12 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Fixes Notify opacity issues
 vim.o.termguicolors = true
 
 require('lazy').setup({
   'onsails/lspkind.nvim',
   "tpope/vim-surround",
   'xiyaowong/nvim-transparent',
-  {
-    'numToStr/FTerm.nvim',
-    config = function()
-      vim.api.nvim_set_keymap('n', '<C-`>', "<cmd>lua require('FTerm').toggle()<CR>", { noremap = true, silent = true })
-      vim.api.nvim_set_keymap('t', '<C-`>', "<C-\\><C-n><CMD>lua require('FTerm').toggle()<CR>",
-        { noremap = true, silent = true })
-
-      require 'FTerm'.setup({
-        blend = 5,
-        dimensions = {
-          height = 0.90,
-          width = 0.90,
-          x = 0.5,
-          y = 0.5
-        }
-      })
-    end
-  },
   {
     "folke/trouble.nvim",
     dependencies = "nvim-tree/nvim-web-devicons",
@@ -47,6 +28,21 @@ require('lazy').setup({
         -- refer to the configuration section below
       }
     end
+  },
+  {
+    'stevearc/conform.nvim',
+    lazy = false,
+    opts = {
+      notify_on_error = false,
+      format_on_save = {
+        timeout_ms = 1000,
+        lsp_fallback = true,
+      },
+      formatters_by_ft = {
+        lua = { 'stylua' },
+        gdscript = { 'gdformat' }
+      },
+    },
   },
   {
     "folke/todo-comments.nvim",
@@ -63,6 +59,15 @@ require('lazy').setup({
       -- configuration goes here
     },
   },
+  -- {
+  --   "rcarriga/nvim-notify",
+  --   config = function()
+  --     require("notify").setup({
+  --       background_colour = "#000000",
+  --       enabled = false,
+  --     })
+  --   end
+  -- },
   {
     "folke/noice.nvim",
     config = function()
@@ -100,10 +105,6 @@ require('lazy').setup({
       -- Useful status updates for LSP
       'j-hui/fidget.nvim',
     }
-  },
-  { -- Autocompletion
-    'hrsh7th/nvim-cmp',
-    dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
   },
   {
     'nvim-treesitter/nvim-treesitter',

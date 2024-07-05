@@ -8,6 +8,9 @@ vim.o.relativenumber = true
 -- Disable mouse mode
 vim.o.mouse = ''
 
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+
 -- Enable break indent
 vim.o.breakindent = true
 
@@ -33,7 +36,7 @@ vim.opt.clipboard = 'unnamedplus'
 vim.o.completeopt = 'menuone,noselect'
 
 -- Concealer for Neorg
-vim.o.conceallevel=2
+vim.o.conceallevel = 2
 
 -- Preferences
 vim.opt.wrap = false
@@ -46,4 +49,3 @@ vim.opt.scrolloff = 11
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
-
