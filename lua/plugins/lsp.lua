@@ -60,17 +60,8 @@ for _, lsp in ipairs(servers) do
   }
 end
 
-require('lspconfig').gdscript.setup {
-  cmd = { "/usr/bin/nc", "localhost", "6005" },
-  on_attach = on_attach,
-  capabilities = capabilities,
-  flags = {
-    debounce_text_changes = 150
-  }
-}
+require('lspconfig').gdscript.setup {}
 
--- Example custom configuration for lua
---
 -- Make runtime files discoverable to the server
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, 'lua/?.lua')
