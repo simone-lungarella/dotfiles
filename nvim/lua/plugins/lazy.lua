@@ -90,7 +90,9 @@ require('lazy').setup({
       "MunifTanjim/nui.nvim",
     }
   },
-  { "catppuccin/nvim",      as = "catppuccin" },
+  {
+    "folke/tokyonight.nvim",
+  },
   {
     "windwp/nvim-autopairs",
     config = function() require("nvim-autopairs").setup {} end
@@ -118,15 +120,14 @@ require('lazy').setup({
       'nvim-treesitter/nvim-treesitter-textobjects',
     }
   },
-  { "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
+  { "rcarriga/nvim-dap-ui",          dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
   'theHamsta/nvim-dap-virtual-text',
   'nvim-lualine/lualine.nvim',
-  { "lukas-reineke/indent-blankline.nvim", main = "ibl",     opts = {} },
   'numToStr/Comment.nvim',
   'tpope/vim-sleuth',
 
   -- Fuzzy Finder (files, lsp, etc)
-  { 'nvim-telescope/telescope.nvim',       branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } },
+  { 'nvim-telescope/telescope.nvim', branch = '0.1.x',                                                   dependencies = { 'nvim-lua/plenary.nvim' } },
   'nvim-telescope/telescope-symbols.nvim',
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
   { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make', cond = vim.fn.executable 'make' == 1 },
