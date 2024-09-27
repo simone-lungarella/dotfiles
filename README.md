@@ -3,6 +3,7 @@
 - [Personal configuration files](#personal-configuration-files)
   - [Nvim](#nvim)
     - [Installation](#installation)
+  - [Tmux](#tmux)
 
 ## Nvim
 Install all required packages:
@@ -32,5 +33,7 @@ sudo ln -sf /opt/nvim-linux64/bin/nvim /usr/local/bin/
 Configure it with files contained in `nvim` folder:
 ```bash
 git init temp-repo && cd temp-repo && git remote add origin https://github.com/simone-lungarella/dotfiles && git config core.sparseCheckout true && echo "nvim" >> .git/info/sparse-checkout && git pull origin master && rsync -av nvim/ ~/.config/nvim/ && cd .. && rm -rf temp-repo
-
 ```
+
+## Tmux
+Basic style of tmux, a terminal multiplexer
