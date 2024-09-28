@@ -4,6 +4,8 @@
   - [Nvim](#nvim)
     - [Installation](#installation)
   - [Tmux](#tmux)
+  - [Sway](#sway)
+  - [Waybar](#waybar)
 
 ## Nvim
 Install all required packages:
@@ -37,3 +39,9 @@ git init temp-repo && cd temp-repo && git remote add origin https://github.com/s
 
 ## Tmux
 Basic style of tmux, a terminal multiplexer
+
+## Sway
+Tile manager GUI
+
+## Waybar
+Status bar for Sway
