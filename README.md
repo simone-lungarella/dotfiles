@@ -6,6 +6,7 @@
   - [Tmux](#tmux)
   - [Sway](#sway)
   - [Waybar](#waybar)
+  - [Alacritty](#alacritty)
 
 ## Nvim
 Install all required packages:
@@ -45,3 +46,6 @@ Tile manager GUI
 
 ## Waybar
 Status bar for Sway
+
+## Alacritty
+Terminal emulator
