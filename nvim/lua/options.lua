@@ -27,10 +27,11 @@ vim.wo.signcolumn = 'yes'
 
 -- Set colorscheme
 --vim.cmd [[colorscheme onedark]]
-vim.cmd.colorscheme "tokyonight"
+vim.cmd.colorscheme 'catppuccin'
 
 --vim.cmd()
 vim.opt.clipboard = 'unnamedplus'
+vim.api.nvim_set_option('clipboard', 'unnamedplus')
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
@@ -49,3 +50,11 @@ vim.opt.scrolloff = 11
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+
+-- Disable fold in queries
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'dbout' },
+  callback = function()
+    vim.opt.foldenable = false
+  end,
+})
