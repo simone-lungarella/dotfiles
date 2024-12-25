@@ -96,19 +96,8 @@ require("lazy").setup({
 				cmdline = {
 					format = {
 						cmdline = { pattern = "^:", icon = "", lang = "vim" },
-						-- FIXME: disabled filter because it makes cmdline to disappear
-						-- filter = { pattern = "^:%s*!", icon = "_", lang = "bash" },
-						filter = false,
+						filter = { pattern = "^:%s*!", icon = "$", lang = "bash" },
 					},
-				},
-				messages = {
-					-- FIXME: enabled to avoid space under lualine, disabled because shows errors
-					enabled = true,
-					view = false,
-					view_error = false,
-					view_warn = false,
-					view_history = false,
-					view_search = false,
 				},
 				lsp = {
 					messages = {
@@ -121,6 +110,14 @@ require("lazy").setup({
 						["vim.lsp.util.convert_input_to_markdown_lines"] = true,
 						["vim.lsp.util.stylize_markdown"] = true,
 					},
+				},
+				messages = {
+					enabled = true,
+					view = false,
+					view_history = false,
+					view_search = false,
+					view_error = "notify",
+					view_warn = "notify",
 				},
 			})
 		end,
