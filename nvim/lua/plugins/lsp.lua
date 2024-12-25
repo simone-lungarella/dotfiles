@@ -43,7 +43,7 @@ require("mason").setup()
 
 -- Enable the following language servers
 -- Feel free to add/remove any LSPs that you want here. They will automatically be installed
-local servers = { "clangd", "pyright", "tsserver" }
+local servers = { "clangd", "pyright", "jdtls" }
 
 -- Ensure the servers above are installed
 require("mason-lspconfig").setup({
@@ -99,6 +99,93 @@ require("lspconfig").lua_ls.setup({
 			},
 			-- Do not send telemetry data containing a randomized but unique identifier
 			telemetry = { enable = false },
+		},
+	},
+})
+
+-- Java configuration
+local mason_path = vim.fn.glob(vim.fn.stdpath("data") .. "/mason/")
+local jdtls_root = mason_path .. "packages/jdtls"
+local jdtls_config = jdtls_root .. "/config_linux"
+local equinox_launcher = jdtls_root .. "/plugins/org.eclipse.equinox.launcher_1.6.900.v20240613-2009.jar"
+local path_to_java_debug = "~/Repositories/Personal/java-debug/com.microsoft.java.debug.plugin/target"
+
+require("lspconfig").jdtls.setup({
+	-- Add generic configuration such as code actions
+	on_attach = on_attach,
+	cmd = {
+		"/usr/lib/jvm/java-21-openjdk-21.0.5.0.11-1.fc40.x86_64/bin/java",
+		"-Declipse.application=org.eclipse.jdt.ls.core.id1",
+		"-Dosgi.bundles.defaultStartLevel=4",
+		"-Declipse.product=org.eclipse.jdt.ls.core.product",
+		"-Dosgi.checkConfiguration=true",
+		"-Dosgi.sharedConfiguration.area=" .. jdtls_config,
+		"-Dosgi.sharedConfiguration.area.readOnly=true",
+		"-Dosgi.configuration.cascaded=true",
+		"-Xms1G",
+		"--add-modules=ALL-SYSTEM",
+		"--add-opens",
+		"java.base/java.util=ALL-UNNAMED",
+		"--add-opens",
+		"java.base/java.lang=ALL-UNNAMED",
+		"-javaagent:" .. jdtls_root .. "/lombok.jar",
+		"-jar",
+		equinox_launcher,
+		"-configuration",
+		jdtls_config,
+		"-data",
+		vim.fn.stdpath("cache") .. "/jdtls/" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":t"),
+	},
+	settings = {
+		eclipse = {
+			downloadSources = true,
+		},
+		maven = {
+			downloadSources = true,
+		},
+		implementationsCodeLens = {
+			enabled = true,
+		},
+		referencesCodeLens = {
+			enabled = true,
+		},
+		references = {
+			includeDecompiledSources = true,
+		},
+		inlayHints = {
+			parameterNames = {
+				enabled = "all", -- literals, all, none
+			},
+		},
+		java = {
+			configuration = {
+				--     -- java-11-openjdk.x86_64 (/usr/lib/jvm/java-11-openjdk-11.0.24.0.8-2.fc40.x86_64/bin/java)
+				--     -- java-21-openjdk.x86_64 (/usr/lib/jvm/java-21-openjdk-21.0.4.0.7-2.fc40.x86_64/bin/java)
+				--     -- java-1.8.0-openjdk.x86_64 (/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.422.b06-2.fc40.x86_64/jre/bin/java)
+				--     -- /usr/lib/jvm/jdk8u422-b05
+				--     -- See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request
+				--     -- And search for `interface RuntimeOption`
+				--     -- The `name` is NOT arbitrary, but must match one of the elements from `enum ExecutionEnvironment` in the link above
+				runtimes = {
+					{
+						name = "JavaSE-1.8",
+						path = "/usr/lib/jvm/jdk8u422-b05",
+					},
+					{
+						name = "JavaSE-11",
+						path = "/usr/lib/jvm/java-11-openjdk-11.0.24.0.8-2.fc40.x86_64",
+					},
+					{
+						name = "JavaSE-21",
+						path = "/usr/lib/jvm/java-21-openjdk-21.0.5.0.11-1.fc40.x86_64",
+					},
+				},
+			},
+		},
+	},
+	init_options = {
+		bundles = {
+			vim.fn.glob(path_to_java_debug .. "com.microsoft.java.debug.plugin-0.53.0.jar"),
 		},
 	},
 })

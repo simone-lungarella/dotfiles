@@ -111,6 +111,10 @@ require("lazy").setup({
 						["vim.lsp.util.stylize_markdown"] = true,
 					},
 				},
+				hover = {
+					enabled = true,
+					silent = true,
+				},
 				messages = {
 					enabled = true,
 					view = false,
