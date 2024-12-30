@@ -54,17 +54,13 @@ require("lazy").setup({
 		opts = {},
 	},
 	{
-		"MeanderingProgrammer/render-markdown.nvim",
-		opts = {},
-		dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.nvim" },
-	},
-	{
 		"iamcco/markdown-preview.nvim",
 		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-		ft = { "markdown" },
-		build = function()
-			vim.fn["mkdp#util#install"]()
+		build = "cd app && yarn install",
+		init = function()
+			vim.g.mkdp_filetypes = { "markdown" }
 		end,
+		ft = { "markdown" },
 	},
 	{
 		"catppuccin/nvim",
@@ -98,10 +94,11 @@ require("lazy").setup({
 						cmdline = { pattern = "^:", icon = "", lang = "vim" },
 						filter = { pattern = "^:%s*!", icon = "$", lang = "bash" },
 					},
+					-- view = "cmdline",
 				},
 				lsp = {
 					messages = {
-						enabled = false,
+						enabled = true,
 					},
 					progress = {
 						enabled = false,
@@ -117,11 +114,23 @@ require("lazy").setup({
 				},
 				messages = {
 					enabled = true,
-					view = false,
+					view = "notify",
 					view_history = false,
 					view_search = false,
 					view_error = "notify",
 					view_warn = "notify",
+				},
+				views = {
+					cmdline_popup = {
+						border = {
+							style = "none",
+							padding = { 1, 1 },
+						},
+						filter_options = {},
+						win_options = {
+							winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
+						},
+					},
 				},
 			})
 		end,
@@ -185,7 +194,7 @@ require("lazy").setup({
 		opts = {
 			bigfile = { enabled = true },
 			dashboard = { enabled = true },
-			indent = { enabled = true },
+			indent = { enabled = false },
 			input = { enabled = true },
 			notifier = { enabled = true },
 			quickfile = { enabled = true },
@@ -193,5 +202,34 @@ require("lazy").setup({
 			statuscolumn = { enabled = true },
 			words = { enabled = true },
 		},
+	},
+	{
+		"stevearc/dressing.nvim",
+		opts = {},
+	},
+	{
+		"cameron-wags/rainbow_csv.nvim",
+		config = true,
+		ft = {
+			"csv",
+			"tsv",
+			"csv_semicolon",
+			"csv_whitespace",
+			"csv_pipe",
+			"rfc_csv",
+			"rfc_semicolon",
+		},
+		cmd = {
+			"RainbowDelim",
+			"RainbowDelimSimple",
+			"RainbowDelimQuoted",
+			"RainbowMultiDelim",
+		},
+	},
+	{
+		"simone-lungarella/randomize.nvim",
+		config = function()
+			require("randomize").setup()
+		end,
 	},
 })
