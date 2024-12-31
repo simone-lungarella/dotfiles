@@ -12,8 +12,6 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-vim.o.termguicolors = true
-
 require("lazy").setup({
 	"onsails/lspkind.nvim",
 	"tpope/vim-surround",
@@ -89,13 +87,6 @@ require("lazy").setup({
 		},
 		config = function()
 			require("noice").setup({
-				cmdline = {
-					format = {
-						cmdline = { pattern = "^:", icon = "", lang = "vim" },
-						filter = { pattern = "^:%s*!", icon = "$", lang = "bash" },
-					},
-					-- view = "cmdline",
-				},
 				lsp = {
 					messages = {
 						enabled = true,
@@ -108,10 +99,6 @@ require("lazy").setup({
 						["vim.lsp.util.stylize_markdown"] = true,
 					},
 				},
-				hover = {
-					enabled = true,
-					silent = true,
-				},
 				messages = {
 					enabled = true,
 					view = "notify",
@@ -119,18 +106,6 @@ require("lazy").setup({
 					view_search = false,
 					view_error = "notify",
 					view_warn = "notify",
-				},
-				views = {
-					cmdline_popup = {
-						border = {
-							style = "none",
-							padding = { 1, 1 },
-						},
-						filter_options = {},
-						win_options = {
-							winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
-						},
-					},
 				},
 			})
 		end,
@@ -161,9 +136,6 @@ require("lazy").setup({
 	},
 	{
 		"nvim-lualine/lualine.nvim",
-	},
-	{
-		"numToStr/Comment.nvim",
 	},
 	{
 		"tpope/vim-sleuth",
