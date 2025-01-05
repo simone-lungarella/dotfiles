@@ -43,7 +43,7 @@ require("mason").setup()
 
 -- Enable the following language servers
 -- Feel free to add/remove any LSPs that you want here. They will automatically be installed
-local servers = { "clangd", "pyright", "jdtls" }
+local servers = { "clangd", "pyright", "jdtls", "ltex" }
 
 -- Ensure the servers above are installed
 require("mason-lspconfig").setup({
@@ -62,6 +62,10 @@ for _, lsp in ipairs(servers) do
 end
 
 require("lspconfig").gdscript.setup({})
+require("lspconfig").ltex.setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
 
 -- Make runtime files discoverable to the server
 local runtime_path = vim.split(package.path, ";")
