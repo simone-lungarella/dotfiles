@@ -29,32 +29,23 @@ vim.wo.signcolumn = 'yes'
 --vim.cmd [[colorscheme onedark]]
 vim.cmd.colorscheme 'catppuccin'
 
---vim.cmd()
 vim.opt.clipboard = 'unnamedplus'
-vim.api.nvim_set_option('clipboard', 'unnamedplus')
+vim.api.nvim_set_option_value('clipboard', 'unnamedplus', {})
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
 
--- Concealer for Neorg
-vim.o.conceallevel = 2
+vim.o.conceallevel = 0
 
 -- Preferences
 vim.opt.wrap = false
 vim.opt.wrapscan = true
 vim.opt.scrolloff = 11
+-- vim.opt.colorcolumn = '120'
 
 -- [[ Basic Keymaps ]]
 -- Set <space> as the leader key
 -- See `:help mapleader`
---  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
-
--- Disable fold in queries
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'dbout' },
-  callback = function()
-    vim.opt.foldenable = false
-  end,
-})
+vim.g.editorconfig = false

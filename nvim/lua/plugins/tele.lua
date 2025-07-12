@@ -1,52 +1,60 @@
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
-if vim.g.borderStyle == "rounded" then
-  borderChars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
+if vim.g.borderStyle == 'rounded' then
+  BorderChars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' }
 end
 
 local smallLayout = { horizontal = { width = 0.6, height = 0.6 } }
 
-require("telescope").setup {
+require('telescope').setup {
   defaults = {
-    path_display = { "tail" },
-    selection_caret = "  ",
-    prompt_prefix = "",
-    multi_icon = "󰒆 ",
+    path_display = { 'tail' },
+    selection_caret = '  ',
+    prompt_prefix = '',
+    multi_icon = '󰒆 ',
     results_title = false,
     prompt_title = false,
     dynamic_preview_title = true,
-    borderchars = borderChars,
+    borderchars = BorderChars,
     preview = false,
     cycle_layout_list = {
-      "horizontal",
-      { previewer = false, layout_strategy = "horizontal", layout_config = smallLayout },
+      'horizontal',
+      { previewer = false, layout_strategy = 'horizontal', layout_config = smallLayout },
     },
-    layout_strategy = "horizontal",
-    sorting_strategy = "ascending", -- so layout is consistent with prompt_position "top"
+    layout_strategy = 'horizontal',
+    sorting_strategy = 'ascending', -- so layout is consistent with prompt_position "top"
     layout_config = smallLayout,
     vimgrep_arguments = {
-      "rg",
-      "--no-config",
-      "--vimgrep",
-      "--smart-case",
-      "--trim",
-      ("--ignore-file=" .. vim.fs.normalize("~/.config/rg/ignore")),
+      'rg',
+      '--no-config',
+      '--vimgrep',
+      '--smart-case',
+      '--pcre2', -- Enable PCRE2 for advanced regex features
+      '--trim',
+      ('--ignore-file=' .. vim.fs.normalize '~/.config/rg/ignore'),
     },
     file_ignore_patterns = {
-      "%.png$", "%.svg", "%.gif", "%.icns", "%.jpe?g",
-      "%.zip", "%.pdf", "%.git/", "addons/"
+      '%.png$',
+      '%.svg',
+      '%.gif',
+      '%.icns',
+      '%.jpe?g',
+      '%.zip',
+      '%.pdf',
+      '%.git/',
+      'addons/',
     },
   },
   pickers = {
     find_files = {
       find_command = {
-        "rg",
-        "--no-config",
-        "--files",
-        "--sortr=modified",
-        ("--ignore-file=" .. vim.fs.normalize("~/.config/rg/ignore")),
+        'rg',
+        '--no-config',
+        '--files',
+        '--sortr=modified',
+        ('--ignore-file=' .. vim.fs.normalize '~/.config/rg/ignore'),
       },
-      path_display = { "filename_first" },
+      path_display = { 'filename_first' },
       layout_config = smallLayout,
     },
     live_grep = {
@@ -57,12 +65,12 @@ require("telescope").setup {
   },
 }
 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "TelescopeResults",
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'TelescopeResults',
   callback = function(ctx)
     vim.api.nvim_buf_call(ctx.buf, function()
-      vim.fn.matchadd("TelescopeParent", "\t\t.*$")
-      vim.api.nvim_set_hl(0, "TelescopeParent", { link = "Comment" })
+      vim.fn.matchadd('TelescopeParent', '\t\t.*$')
+      vim.api.nvim_set_hl(0, 'TelescopeParent', { link = 'Comment' })
     end)
   end,
 })
@@ -70,16 +78,18 @@ vim.api.nvim_create_autocmd("FileType", {
 local function filenameFirst(_, path)
   local tail = vim.fs.basename(path)
   local parent = vim.fs.dirname(path)
-  if parent == "." then return tail end
-  return string.format("%s\t\t%s", tail, parent)
+  if parent == '.' then
+    return tail
+  end
+  return string.format('%s\t\t%s', tail, parent)
 end
 
-require("telescope").setup {
+require('telescope').setup {
   pickers = {
     find_files = {
       path_display = filenameFirst,
-    }
-  }
+    },
+  },
 }
 
 -- Enable telescope fzf native, if installed
@@ -96,12 +106,13 @@ vim.keymap.set('n', '<leader>/', function()
 end, { desc = '[/] Fuzzily search in current buffer]' })
 
 vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
--- vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
+vim.keymap.set('n', '<leader>ss', require('telescope.builtin').lsp_document_symbols, { desc = '[S]earch [s]ymbols' })
+vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>sb', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
 vim.keymap.set('n', '<leader>sS', require('telescope.builtin').git_status, { desc = '' })
 
-vim.api.nvim_set_keymap("n", "st", ":TodoTelescope<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<Leader><tab>", "<Cmd>lua require('telescope.builtin').commands()<CR>", { noremap = false })
+vim.api.nvim_set_keymap('n', 'st', ':TodoTelescope<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<Leader><tab>', "<Cmd>lua require('telescope.builtin').commands()<CR>", { noremap = false })
