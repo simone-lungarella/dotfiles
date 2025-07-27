@@ -1,8 +1,8 @@
 configuration{
     modi: "run,drun,window";
     icon-theme: "Oranchelo";
-    show-icons: true;
-    terminal: "alacritty";
+    show-icons: false;
+    terminal: "kitty";
     drun-display-format: "{icon} {name}";
     location: 0;
     disable-history: false;
@@ -14,4 +14,5 @@ configuration{
     sidebar-mode: true;
 }
 
-@theme "catppuccin-mocha"
+@theme "~/.config/rofi/vague.rasi"
+
