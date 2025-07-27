@@ -14,8 +14,11 @@ vim.o.scrolloff = 11
 vim.o.conceallevel = 0
 vim.o.clipboard = 'unnamedplus'
 vim.o.completeopt = 'menuone,noselect'
+vim.o.winborder = 'rounded'
 vim.bo.expandtab = true
 vim.wo.signcolumn = 'yes'
+vim.g.mapleader = ' '
+
 
 vim.api.nvim_set_option_value('clipboard', 'unnamedplus', {})
 
@@ -35,8 +38,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup {
-    { 'catppuccin/nvim', },
-    { 'xiyaowong/nvim-transparent', },
+    { "vague2k/vague.nvim", },
     { 'nvim-treesitter/nvim-treesitter', },
     { 'cameron-wags/rainbow_csv.nvim',
         config = true,
@@ -112,8 +114,10 @@ vim.keymap.set('n', 'th', ":bprevious<CR>")
 vim.keymap.set('n', 'tl', ":bnext<CR>")
 
 -- Extra
-vim.cmd("colorscheme catppuccin")
+vim.cmd("colorscheme vague")
 vim.cmd(":hi statusline guibg=NONE")
+
+vim.api.nvim_create_augroup("NumberToggle", { clear = true })
 
 -- Turn off relative numbers in insert mode
 vim.api.nvim_create_autocmd("InsertEnter", {
