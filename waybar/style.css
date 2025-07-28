@@ -1,9 +1,8 @@
 * {
     border: none;
     border-radius: 0px;
-    /* `otf-font-awesome` is required to be installed for icons */
     font-family: JetBrainsMono;
-    font-size: 13px;
+    font-size: 20px;
     min-height: 0;
 }
 
@@ -27,25 +26,18 @@ window#waybar.hidden {
 #workspaces button:hover {
     background: lightblue;
     color: black;
-    border-bottom: 3px solid #ffffff;
 }
 
-#workspaces button.focused {
+#workspaces button.active {
     border-color: #4c7899;
 }
 
-#workspaces button.focused:hover {
+#workspaces button.active:hover {
     color: black;
-    border-bottom: 3px solid #ffffff;
 }
 
 #workspaces button.urgent {
     background-color: #eb4d4b;
-}
-
-#mode {
-    background-color: #64727D;
-    border-bottom: 3px solid #ffffff;
 }
 
 #clock,
@@ -58,6 +50,7 @@ window#waybar.hidden {
 #network,
 #pulseaudio,
 #custom-media,
+#custom-notification,
 #custom-launcher,
 #custom-power,
 #custom-layout,
@@ -88,17 +81,11 @@ window#waybar.hidden {
 }
 
 #clock {
-    background-color: #171717;
     color: #ffffff;
 }
 
 #battery {
     color: #ffffff;
-}
-
-#battery.charging, #battery.plugged {
-    color: #ffffff;
-    background-color: #26A65B;
 }
 
 @keyframes blink {
@@ -164,8 +151,8 @@ label:focus {
 
 #custom-launcher{
     background-color: #171717;
-    font-size: 20px;
-    border-radius: 20px 0px 0px 20px;
+    font-size: 24px;
+    border-radius: 20px 0px 0px 0px;
     margin-left: 5px;
 }
 
