@@ -37,7 +37,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup {
-    { "vague2k/vague.nvim", }, -- Colorscheme
+    { 'vague2k/vague.nvim', }, -- Colorscheme
     { 'nvim-treesitter/nvim-treesitter', },
     { 'cameron-wags/rainbow_csv.nvim',
         config = true,
@@ -50,12 +50,12 @@ require('lazy').setup {
         dependencies = {
             'williamboman/mason.nvim',
             'williamboman/mason-lspconfig.nvim',
-            "mfussenegger/nvim-jdtls", -- Java LSP, ikr?
+            'mfussenegger/nvim-jdtls', -- Java LSP, ikr?
         },
         config = function()
-            require("mason").setup()
-            require("mason-lspconfig").setup()
-            require("lspconfig").lua_ls.setup({})
+            require('mason').setup()
+            require('mason-lspconfig').setup()
+            require('lspconfig').lua_ls.setup({})
         end
     },
     {
@@ -119,6 +119,13 @@ vim.keymap.set('n', '<M-f>', vim.lsp.buf.format)
 vim.keymap.set('n', 'td', ":bdelete<CR>")
 vim.keymap.set('n', 'th', ":bprevious<CR>")
 vim.keymap.set('n', 'tl', ":bnext<CR>")
+vim.keymap.set('n', 'dq', ":lua vim.diagnostic.setqflist()<CR>")
+
+-- Diagnostic
+vim.diagnostic.config({
+    sign = true,
+    virtual_text = true,
+})
 
 -- Extra
 vim.cmd("colorscheme vague")
