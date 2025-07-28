@@ -12,13 +12,12 @@ vim.o.wrap = false
 vim.o.wrapscan = true
 vim.o.scrolloff = 11
 vim.o.conceallevel = 0
-vim.o.clipboard = 'unnamedplus'
 vim.o.completeopt = 'menuone,noselect'
 vim.o.winborder = 'rounded'
+vim.o.clipboard = 'unnamedplus'
 vim.bo.expandtab = true
 vim.wo.signcolumn = 'yes'
 vim.g.mapleader = ' '
-
 
 vim.api.nvim_set_option_value('clipboard', 'unnamedplus', {})
 
@@ -38,7 +37,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup {
-    { "vague2k/vague.nvim", },
+    { "vague2k/vague.nvim", }, -- Colorscheme
     { 'nvim-treesitter/nvim-treesitter', },
     { 'cameron-wags/rainbow_csv.nvim',
         config = true,
@@ -51,7 +50,7 @@ require('lazy').setup {
         dependencies = {
             'williamboman/mason.nvim',
             'williamboman/mason-lspconfig.nvim',
-            "mfussenegger/nvim-jdtls",
+            "mfussenegger/nvim-jdtls", -- Java LSP, ikr?
         },
         config = function()
             require("mason").setup()
@@ -78,11 +77,19 @@ require('lazy').setup {
         'junegunn/fzf',
         build = './install --bin',
         config = function()
-            vim.env.FZF_DEFAULT_COMMAND = "rg --files --glob '!*.class'"
+            vim.env.FZF_DEFAULT_COMMAND = table.concat({
+                "rg --files",
+                "--glob '!*.class'",
+                "--glob '!*.import'",
+                "--glob '!*.cfg'",
+                "--glob '!*.uid'",
+                "--glob '!.godot/**'",
+                "--glob '!.import/**'"
+            }, " ")
         end,
     },
     {
-        'nvim-lualine/lualine.nvim',
+        'nvim-lualine/lualine.nvim', -- Status line
         config = function()
             require('lualine').setup {
                 options = {
@@ -104,8 +111,8 @@ require('lazy').setup {
     },
 }
 
--- LSP
-vim.lsp.enable({ 'lua_ls', 'clangd', 'pyright', 'bashls' })
+-- LSP — JDTLS has its own file configuration because lombok does not work out of the box.
+vim.lsp.enable({ 'lua_ls', 'clangd', 'pyright', 'bashls', })
 
 -- Keymaps
 vim.keymap.set('n', '<M-f>', vim.lsp.buf.format)
@@ -117,9 +124,10 @@ vim.keymap.set('n', 'tl', ":bnext<CR>")
 vim.cmd("colorscheme vague")
 vim.cmd(":hi statusline guibg=NONE")
 
+-- Autogroup that handles number lines. It turns off relative numbers in insert mode
+-- and turns relative numbers back on when leaving insert mode.
 vim.api.nvim_create_augroup("NumberToggle", { clear = true })
 
--- Turn off relative numbers in insert mode
 vim.api.nvim_create_autocmd("InsertEnter", {
     group = "NumberToggle",
     callback = function()
@@ -127,7 +135,6 @@ vim.api.nvim_create_autocmd("InsertEnter", {
     end,
 })
 
--- Turn relative numbers back on when leaving insert mode
 vim.api.nvim_create_autocmd("InsertLeave", {
     group = "NumberToggle",
     callback = function()
