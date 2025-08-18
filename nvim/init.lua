@@ -39,7 +39,17 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup {
     { 'vague2k/vague.nvim', }, -- Colorscheme
-    { 'nvim-treesitter/nvim-treesitter', },
+    { "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
+        config = function()
+            require("nvim-treesitter.configs").setup {
+                highlight = {
+                    enable = true,
+                    additional_vim_regex_highlighting = false,
+                },
+            }
+        end,
+    },
     { 'cameron-wags/rainbow_csv.nvim',
         config = true,
         ft = {
