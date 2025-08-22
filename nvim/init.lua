@@ -17,7 +17,7 @@ vim.o.completeopt = 'menuone,noselect'
 vim.o.winborder = 'rounded'
 vim.o.clipboard = 'unnamedplus'
 vim.bo.expandtab = true
-vim.wo.signcolumn = 'yes'
+vim.wo.signcolumn = 'no'
 vim.g.mapleader = ' '
 
 vim.api.nvim_set_option_value('clipboard', 'unnamedplus', {})
@@ -38,7 +38,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup {
-    { 'vague2k/vague.nvim', }, -- Colorscheme
+    { "EdenEast/nightfox.nvim", },
     { "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
         config = function()
@@ -134,12 +134,14 @@ vim.keymap.set('n', 'dq', ":lua vim.diagnostic.setqflist()<CR>")
 
 -- Diagnostic
 vim.diagnostic.config({
-    sign = true,
-    virtual_text = true,
+    sign = false,
+    virtual_text = false,
 })
 
+vim.keymap.set('n', 'dK', vim.diagnostic.open_float, { desc = "Show diagnostic in float" })
+
 -- Extra
-vim.cmd("colorscheme vague")
+vim.cmd("colorscheme nordfox")
 vim.cmd(":hi statusline guibg=NONE")
 
 -- Autogroup that handles number lines. It turns off relative numbers in insert mode
