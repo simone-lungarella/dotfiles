@@ -144,6 +144,14 @@ vim.keymap.set('n', 'dK', vim.diagnostic.open_float, { desc = "Show diagnostic i
 vim.cmd("colorscheme nordfox")
 vim.cmd(":hi statusline guibg=NONE")
 
+-- Make popup backgrounds transparent (alternative approach)
+vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'NONE' })
+vim.api.nvim_set_hl(0, 'FloatBorder', { bg = 'NONE' })
+vim.api.nvim_set_hl(0, 'Pmenu', { bg = 'NONE' })
+vim.api.nvim_set_hl(0, 'PmenuSel', { bg = '#5e81ac', fg = '#eceff4' })
+vim.api.nvim_set_hl(0, 'Normal', { bg = 'NONE' })
+vim.api.nvim_set_hl(0, 'SignColumn', { bg = 'NONE' })
+
 -- Autogroup that handles number lines. It turns off relative numbers in insert mode
 -- and turns relative numbers back on when leaving insert mode.
 vim.api.nvim_create_augroup("NumberToggle", { clear = true })
