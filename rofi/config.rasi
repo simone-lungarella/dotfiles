@@ -1,18 +1,14 @@
 configuration{
-    modi: "run,drun,window";
-    icon-theme: "Oranchelo";
+    modi: "drun";
     show-icons: false;
     terminal: "kitty";
-    drun-display-format: "{icon} {name}";
+    drun-display-format: " {name}";
     location: 0;
     disable-history: false;
     hide-scrollbar: true;
-    display-drun: "   Apps ";
-    display-run: "   Run ";
-    display-window: " 󰕰  Window";
-    display-Network: " 󰤨  Network";
-    sidebar-mode: true;
+    display-drun: "";
+    sidebar-mode: false;
 }
 
-@theme "~/.config/rofi/vague.rasi"
+@theme "~/.config/rofi/nord.rasi"
 
