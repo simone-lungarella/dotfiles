@@ -11,7 +11,9 @@
     "clock"
   ],
   "modules-right": [
-    "network",
+    "custom/jwt-generator",
+    // "network",
+    // "temperature",
     "pulseaudio",
     "battery"
   ],
@@ -40,21 +42,28 @@
     "format-alt": "{:%d %B %Y}",
     "tooltip": false
   },
+  "custom/jwt-generator": {
+    "exec": "~/.local/bin/jwt-generator.sh status",
+    "interval": 5,
+    "on-click": "~/.local/bin/jwt-generator.sh toggle",
+    "return-type": "json"
+  },
+  "temperature": {
+    "thermal-zone": 0,
+    "format": " [{temperatureC}°C] · ",
+    "tooltip": true
+  },
   "network": {
-    "format-wifi": "  {signalStrength}% ·",
-    "format-ethernet": "wired",
-    "format-disconnected": "offline",
+    "format-wifi": " ⇡ ·",
+    "format-disconnected": "󰖪  ·",
     "interval": 5,
     "tooltip-format-wifi": "⇣{bandwidthDownBytes} ⇡{bandwidthUpBytes}",
     "on-click": "tmux new-window 'nmcli dev wifi; read -n 1'"
   },
   "battery": {
-    "format": "{capacity}%",
-    "format-charging": "󰂄 {capacity}%",
-    "format-discharging": "󰂄⇣ {capacity}%",
-    "format-plugged": "󰂄⇡ {capacity}%",
-    "format-warning": "⚠ {capacity}%",
-    "format-critical": "🔴 {capacity}%",
+    "format": "󰂄 [{capacity}%]",
+    "format-charging": "󰂄⇡[{capacity}%]",
+    "format-discharging": "󰂄⇣[{capacity}%]",
     "tooltip-format-discharging": "{power:>1.0f}W ⇣  {capacity}%",
     "tooltip-format-charging": "{power:>1.0f}W ⇡  {capacity}%",
     "interval": 5,
@@ -65,8 +74,8 @@
     "on-click": "tmux new-window 'btop'"
   },
   "pulseaudio": {
-    "format": "  {volume}% ·",
-    "format-muted": "󰝟  muted ·",
+    "format": "|   [{volume}%] ·",
+    "format-muted": "| 󰝟  muted ·",
     "scroll-step": 1,
     "on-click": "pavucontrol",
     "tooltip-format": "Volume: {volume}%",
