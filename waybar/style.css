@@ -39,3 +39,15 @@
 tooltip {
 	padding: 2px;
 }
+
+#custom-newsboat.has-unread {
+  color: #e5c07b;
+  min-width: 12px;
+  margin: 0 7.5px;
+}
+
+#custom-newsboat.no-unread {
+  color: gray;
+  min-width: 12px;
+  margin: 0 7.5px;
+}

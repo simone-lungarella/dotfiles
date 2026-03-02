@@ -11,9 +11,7 @@
     "clock"
   ],
   "modules-right": [
-    "custom/jwt-generator",
-    // "network",
-    // "temperature",
+    "custom/newsboat",
     "pulseaudio",
     "battery"
   ],
@@ -42,24 +40,6 @@
     "format-alt": "{:%d %B %Y}",
     "tooltip": false
   },
-  "custom/jwt-generator": {
-    "exec": "~/.local/bin/jwt-generator.sh status",
-    "interval": 5,
-    "on-click": "~/.local/bin/jwt-generator.sh toggle",
-    "return-type": "json"
-  },
-  "temperature": {
-    "thermal-zone": 0,
-    "format": " [{temperatureC}°C] · ",
-    "tooltip": true
-  },
-  "network": {
-    "format-wifi": " ⇡ ·",
-    "format-disconnected": "󰖪  ·",
-    "interval": 5,
-    "tooltip-format-wifi": "⇣{bandwidthDownBytes} ⇡{bandwidthUpBytes}",
-    "on-click": "tmux new-window 'nmcli dev wifi; read -n 1'"
-  },
   "battery": {
     "format": "󰂄 [{capacity}%]",
     "format-charging": "󰂄⇡[{capacity}%]",
@@ -80,5 +60,13 @@
     "on-click": "pavucontrol",
     "tooltip-format": "Volume: {volume}%",
     "on-click": "tmux new-window 'wiremix' \\; send-keys Tab Tab"
+  },
+  "custom/newsboat": {
+    "exec": "~/.config/waybar/scripts/newsboat_unread.sh --icon-only",
+    "return-type": "json",
+    "interval": 30,
+    "hide-empty-text": true,
+    "on-click": "tmux new-window newsboat",
+    "tooltip": true
   }
 }
