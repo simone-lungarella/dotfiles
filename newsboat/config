@@ -1,0 +1,10 @@
+bind-key j down
+bind-key k up
+bind-key h quit
+bind-key l open
+
+color background default default
+color listnormal white default
+color listfocus black yellow
+color info cyan default
+color article white default
