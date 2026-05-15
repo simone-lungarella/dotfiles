@@ -19,7 +19,7 @@ vim.o.completeopt = 'menuone,noselect'
 vim.o.winborder = 'rounded'
 vim.o.clipboard = 'unnamedplus'
 vim.bo.expandtab = true
-vim.wo.signcolumn = 'no'
+vim.wo.signcolumn = 'yes'
 vim.g.mapleader = ' '
 
 vim.api.nvim_set_option_value('clipboard', 'unnamedplus', {})
@@ -111,6 +111,9 @@ require('lazy').setup {
             'williamboman/mason-lspconfig.nvim',
             'mfussenegger/nvim-jdtls', -- Java LSP, ikr?
         },
+    },
+    {
+        'mfussenegger/nvim-dap',
     },
     {
         'nvim-lualine/lualine.nvim', -- Status line
