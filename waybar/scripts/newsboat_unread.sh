@@ -10,6 +10,9 @@ ICON=""
 ICON_ONLY=false
 [[ "${1:-}" == "--icon-only" ]] && ICON_ONLY=true
 
+# Reload feeds (non-interactive)
+newsboat -x reload >/dev/null 2>&1 || true
+
 # Get unread count from newsboat. This command is non-interactive and fast.
 # It prints just the number to stdout.
 count_raw="$(newsboat -x print-unread 2>/dev/null || echo 0)"
@@ -33,4 +36,3 @@ else
   # Empty text + class helps styling; Waybar can hide empty text.
   printf '{"text":"","tooltip":"No unread in Newsboat","class":"no-unread"}\n'
 fi
-``
