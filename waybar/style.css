@@ -36,6 +36,14 @@
 	margin: 0 7.5px;
 }
 
+#battery.warning {
+  color: #f59e0b;
+}
+
+#battery.critical {
+  color: red;
+}
+
 tooltip {
 	padding: 2px;
 }
@@ -48,6 +56,22 @@ tooltip {
 
 #custom-newsboat.no-unread {
   color: gray;
+  min-width: 12px;
+  margin: 0 7.5px;
+}
+
+#custom-bdays.no-style {
+  opacity: 0;
+}
+
+#custom-bdays.countdown {
+  color: gray;
+  min-width: 12px;
+  margin: 0 7.5px;
+}
+
+#custom-bdays.bday {
+  color: #e5c07b;
   min-width: 12px;
   margin: 0 7.5px;
 }

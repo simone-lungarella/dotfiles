@@ -11,7 +11,10 @@
     "clock"
   ],
   "modules-right": [
+    "custom/bdays",
     "custom/newsboat",
+    // "network",
+    // "temperature",
     "pulseaudio",
     "battery"
   ],
@@ -29,7 +32,7 @@
       "7": "7",
       "8": "8",
       "9": "9",
-      "active": "󱓻"
+      "active": ""
     },
     "persistent-workspaces": {
       "1": []
@@ -39,6 +42,18 @@
     "format": "{:%A %H:%M}",
     "format-alt": "{:%d %B %Y}",
     "tooltip": false
+  },
+  "temperature": {
+    "thermal-zone": 0,
+    "format": " [{temperatureC}°C] · ",
+    "tooltip": true
+  },
+  "network": {
+    "format-wifi": " ⇡ ·",
+    "format-disconnected": "󰖪  ·",
+    "interval": 5,
+    "tooltip-format-wifi": "⇣{bandwidthDownBytes} ⇡{bandwidthUpBytes}",
+    "on-click": "tmux new-window 'nmcli dev wifi; read -n 1'"
   },
   "battery": {
     "format": "󰂄 [{capacity}%]",
@@ -64,9 +79,15 @@
   "custom/newsboat": {
     "exec": "~/.config/waybar/scripts/newsboat_unread.sh --icon-only",
     "return-type": "json",
-    "interval": 30,
+    "interval": 300,
     "hide-empty-text": true,
     "on-click": "tmux new-window newsboat",
+    "tooltip": true
+  },
+  "custom/bdays": {
+    "exec": "~/.config/waybar/scripts/bdays.sh",
+    "return-type": "json",
+    "interval": 3,
     "tooltip": true
   }
 }
