@@ -1,10 +1,13 @@
 # Personal configuration files
 
 ## OS
-I prefer to work on Linux machine (tile manager is mandatory) mainly from terminal. I'm using Fedora on my personal machine and on my working machine.
+I prefer to work on Linux machine (tile manager is mandatory) mainly from
+terminal. I'm using Fedora on my personal machine and on my working machine.
 
 ## Neovim
-I use [Neovim](https://github.com/neovim/neovim) for the vast majority of my programming experience trying to have a very minimal set of plugins so to be able to use `vim` too.
+I use [Neovim](https://github.com/neovim/neovim) for the vast majority of my
+programming experience trying to have a very minimal set of plugins so to be
+able to use `vim` too.
 
 - junegunn/fzf;
 - williamboman/mason;
@@ -15,12 +18,10 @@ I use [Neovim](https://github.com/neovim/neovim) for the vast majority of my pro
 - nvim-lualine/lualine;
 - cameron-wags/rainbow_csv;
 
-To keep my typing skills useful in different environments I have a very small set of key remaps:
+To keep my typing skills useful in different environments I have a very small
+set of key remaps:
 
 - `<M-f>`: `vim.lsp.buf.format`;
-- `td`: `:bdelete`;
-- `th`: `:bprevious`;
-- `tl`: `:bnext`;
 - `dq`: `:lua vim.diagnostic.setqflist()`;
 
 ## Tmux
@@ -35,5 +36,5 @@ Simple launcher
 ## Waybar
 Status bar for Sway.
 
-## Alacritty or Kitty
-I'm trying Kitty, but I really don't mind Alacritty too. I don't have a clear preference yet.
+## Kitty
+Kitty as terminal emulator with no fancy configuration.
