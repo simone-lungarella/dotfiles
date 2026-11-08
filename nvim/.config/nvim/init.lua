@@ -20,7 +20,9 @@ vim.o.winborder = 'rounded'
 vim.o.clipboard = 'unnamedplus'
 vim.bo.expandtab = true
 vim.wo.signcolumn = 'yes'
-vim.g.mapleader = ' '
+
+-- Enable when neovim is updated
+-- vim.lsp.semantic_tokens.stop()
 
 vim.api.nvim_set_option_value('clipboard', 'unnamedplus', {})
 
@@ -41,7 +43,8 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup {
     -- Theme
-    { "EdenEast/nightfox.nvim",
+    {
+        "EdenEast/nightfox.nvim",
         config = function()
             require("nightfox").setup({
                 options = {
@@ -50,28 +53,50 @@ require('lazy').setup {
                 },
                 groups = {
                     all = {
+                        -- Float windows and popup menus
                         NormalFloat = { bg = "NONE" },
                         FloatBorder = { bg = "NONE" },
                         Pmenu = { bg = "NONE" },
                         PmenuSel = { bg = "#5e81ac", fg = "#eceff4" },
+
+                        ["@keyword"]               = { fg = "fg1" },
+                        ["@type.builtin"]          = { fg = "fg1" }, -- Native primitives like int, void
+                        ["@module"]                = { fg = "fg1" }, -- Packages / module names
+                        ["@comment"]               = { fg = "palette.yellow.dim", style = "italic" },
+                        ["@comment.documentation"] = { fg = "fg3", style = "NONE" },
+                        ["@variable.parameter"]    = { fg = "fg1" }, -- Object properties/fields
+                        ["@keyword.conditional"]   = { fg = "fg1" },
+                        ["@keyword.repeat"]        = { fg = "fg1" },
+                        ["@keyword.import"]        = { fg = "fg1" },
+                        ["@type"]                  = { fg = "palette.pink" },
+                        ["@type.definition"]       = { fg = "fg1" }, -- Type definitions
                     },
                 },
             })
         end,
     },
-    { "nvim-treesitter/nvim-treesitter",
-        build = ":TSUpdate",
+    {
+        "nvim-treesitter/nvim-treesitter",
+        branch = "main",
         config = function()
-            require("nvim-treesitter.configs").setup {
-                highlight = {
-                    enable = true,
-                    additional_vim_regex_highlighting = false,
-                },
-            }
+            require("nvim-treesitter").setup()
+
+            require("nvim-treesitter").install({
+                "lua", "vim", "vimdoc", "query",
+                "markdown", "markdown_inline", "java",
+                "c", "python"
+            })
+
+            vim.api.nvim_create_autocmd("FileType", {
+                callback = function()
+                    -- If a compiled parser exists for this file, turn it on natively!
+                    pcall(vim.treesitter.start)
+                end,
+            })
         end,
     },
     { 'cameron-wags/rainbow_csv.nvim',
-        config = true,
+    config = true,
         ft = {
             'csv',
         }
@@ -113,6 +138,50 @@ require('lazy').setup {
         },
     },
     {
+        "stevearc/conform.nvim",
+        config = function()
+            require("conform").setup({
+                formatters_by_ft = {
+                    yaml = { "prettier" },
+                    yml = { "prettier" },
+                },
+                formatters = {
+                    prettier = {
+                        prepend_args = function(self, ctx)
+                            if vim.bo[ctx.buf].filetype == "yaml" then
+                                return { "--parser", "yaml" }
+                            end
+                            return {}
+                        end,
+                    },
+                },
+            })
+        end,
+    },
+    {
+        "mfussenegger/nvim-lint",
+        config = function()
+            local lint = require("lint")
+
+            lint.linters.sqlfluff.args = {
+                "lint",
+                "--dialect=impala",
+                "--format=json",
+                "-",
+            }
+
+            lint.linters_by_ft = {
+                sql = { "sqlfluff" },
+            }
+
+            vim.api.nvim_create_autocmd({ "BufWritePost", "InsertLeave" }, {
+                callback = function()
+                    lint.try_lint()
+                end,
+            })
+        end,
+    },
+    {
         'mfussenegger/nvim-dap',
     },
     {
@@ -136,18 +205,55 @@ require('lazy').setup {
             }
         end
     },
+    {
+        "simone-lungarella/randomize.nvim",
+        config = function()
+            require("randomize").setup()
+        end,
+    },
+    -- {
+    --     "simone-lungarella/mdrun.nvim",
+    --     ft = {
+    --         "markdown", "md"
+    --     },
+    --     init = function()
+    --         vim.g.mdrun_no_default_maps = 1
+    --     end,
+    --     keys = {
+    --         {
+    --             "<leader>mr",
+    --             function() require("mdrun").run() end,
+    --             mode = "n",
+    --             desc = "Run bash block under cursor",
+    --         },
+    --     },
+    -- }
 }
 
 -- LSP — JDTLS has its own file configuration because lombok does not work out of the box.
-vim.lsp.enable({ 'lua_ls', 'clangd', 'pyright', 'bashls' })
+vim.lsp.enable({ 'lua_ls', 'clangd', 'pyright', 'bashls', 'go', 'xml' })
 
 -- Keymaps
-vim.keymap.set('n', '<M-f>', vim.lsp.buf.format, { desc = 'Format buffer' })
-vim.keymap.set('n', 'td', ':bdelete<CR>', { desc = 'Delete buffer' })
-vim.keymap.set('n', 'th', ':bprevious<CR>', { desc = 'Previous buffer' })
-vim.keymap.set('n', 'tl', ':bnext<CR>', { desc = 'Next buffer' })
-vim.keymap.set('n', 'dq', vim.diagnostic.setqflist, { desc = 'Diagnostics to quickfix' })
-vim.keymap.set('n', 'dK', vim.diagnostic.open_float, { desc = "Show diagnostic in float" })
+vim.keymap.set('n', '<M-f>', function()
+    local ok = require("conform").format({ bufnr = 0, lsp_fallback = true, timeout_ms = 3000 })
+end, { desc = 'Format buffer' })
+
+-- dq to add diagnostic to quickfix list while ignoring files under /target
+vim.keymap.set('n', 'dq', function()
+    local diagnostics = vim.diagnostic.get()
+
+    diagnostics = vim.tbl_filter(function(d)
+        local name = vim.api.nvim_buf_get_name(d.bufnr)
+        return not name:match('/target/')
+    end, diagnostics)
+
+    vim.fn.setqflist({}, ' ', {
+        title = 'Diagnostics',
+        items = vim.diagnostic.toqflist(diagnostics),
+    })
+
+    vim.cmd.copen()
+end, { desc = 'Diagnostics to quickfix' })
 
 -- Diagnostic
 vim.diagnostic.config({
@@ -155,9 +261,8 @@ vim.diagnostic.config({
     virtual_text = false,
 })
 
--- Extra
-vim.cmd("colorscheme nordfox")
-vim.cmd(":hi statusline guibg=NONE")
+-- Color scheme
+vim.cmd.colorscheme("nordfox")
 
 -- Autogroup that handles number lines. It turns off relative numbers in insert mode
 -- and turns relative numbers back on when leaving insert mode.

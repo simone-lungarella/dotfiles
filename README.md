@@ -1,18 +1,28 @@
-# Personal configuration files
+# Dotfiles
 
-## Fedora / Hyprland quick start
+My [Fedora](https://fedoraproject.org/) configuration: a minimal dark desktop and
+a terminal-first workflow.
 
-These are my Fedora dotfiles, mostly for terminal applications and the Hyprland
-Wayland desktop. The desktop configuration was last checked on **Fedora 45** with
-**Hyprland 0.57.1**, **hyprpaper 0.8.5**, and **Waybar 0.15.0**.
+## What I use
 
-### 1. Install or restore the desktop after a Fedora upgrade
+- [**Hyprland**](https://github.com/hyprwm/Hyprland) — Wayland compositor with Lua configuration and scrolling layout.
+- [**hyprpaper**](https://github.com/hyprwm/hyprpaper) / [**hyprlock**](https://github.com/hyprwm/hyprlock) — wallpaper and manual screen locking.
+- [**Waybar**](https://github.com/Alexays/Waybar) / [**Rofi**](https://github.com/davatorium/rofi) — status bar and application launcher.
+- [**Kitty**](https://github.com/kovidgoyal/kitty) / [**tmux**](https://github.com/tmux/tmux) — terminal and multiplexer; Waybar actions open tools in tmux.
+- [**Neovim**](https://github.com/neovim/neovim) / [**Vim**](https://github.com/vim/vim) — editors, with [Mason](https://github.com/mason-org/mason.nvim), [LSP](https://github.com/neovim/nvim-lspconfig), [Treesitter](https://github.com/nvim-treesitter/nvim-treesitter), and [Conform](https://github.com/stevearc/conform.nvim) in Neovim.
+- [**Newsboat**](https://github.com/newsboat/newsboat) — RSS reader.
+- [**IoskeleyMono**](https://github.com/ahatem/IoskeleyMono) with [**Nerd Fonts**](https://github.com/ryanoasis/nerd-fonts) glyphs — font throughout the desktop.
+- [**GNU Stow**](https://www.gnu.org/software/stow/) — configuration symlinks.
 
-My Hyprland packages come from the third-party
-[lionheartp/Hyprland Copr](https://copr.fedorainfracloud.org/coprs/lionheartp/Hyprland/).
-Fedora upgrades can leave third-party repositories disabled or packages removed.
-Check that the Copr has builds for the new Fedora release before enabling it;
-do not point the new system at an older Fedora release's repository.
+Thanks to the authors and contributors behind these projects.
+
+## New machine
+
+### Install packages
+
+For Fedora 45 with an existing desktop/login manager. Hyprland packages come
+from the third-party [lionheartp/Hyprland Copr](https://copr.fedorainfracloud.org/coprs/lionheartp/Hyprland/);
+check that it supports your Fedora release.
 
 ```bash
 sudo dnf install git stow dnf5-plugins
@@ -22,137 +32,47 @@ sudo dnf --refresh install \
   xdg-desktop-portal-gtk qt6-qtwayland \
   waybar kitty rofi dolphin \
   grim slurp wl-clipboard brightnessctl playerctl \
-  pipewire wireplumber wiremix tmux newsboat btop
+  pipewire wireplumber wiremix tmux newsboat btop \
+  neovim vim-enhanced ripgrep gcc make unzip
 ```
 
-This uses `dnf install` to restore missing packages; `dnf reinstall` is not needed
-just because Fedora was upgraded. If an upgrade still needs to be completed,
-review `sudo dnf upgrade --refresh` separately. Do not blindly accept package
-removals or add `--allowerasing` to resolve dependency conflicts.
+After a Fedora upgrade, re-enable the Copr if needed and rerun the package install.
 
-The commands above do not install or replace a login manager. On my existing
-Fedora GNOME installation, I log out and select **Hyprland** from GDM's session
-menu. Keep GNOME available as a fallback while checking a new Hyprland release.
-
-### 2. Link configuration files (first setup only)
+### Get and link the configs
 
 ```bash
-git clone <your-dotfiles-repository-url> ~/Projects/Personal/dotfiles
+git clone https://github.com/simone-lungarella/dotfiles.git ~/Projects/Personal/dotfiles
 cd ~/Projects/Personal/dotfiles
 mkdir -p ~/.config
 
-# Preview first: Stow will report conflicts rather than overwrite regular files.
-stow --simulate --verbose --target="$HOME" hypr waybar kitty rofi tmux newsboat
-stow --verbose --target="$HOME" hypr waybar kitty rofi tmux newsboat
+stow --simulate --verbose --no-folding --target="$HOME" \
+  hypr waybar kitty rofi tmux newsboat nvim vim bash
+stow --verbose --no-folding --target="$HOME" \
+  hypr waybar kitty rofi tmux newsboat nvim vim bash
 ```
 
-Skip cloning if the repository already exists. If Stow reports conflicts, back
-up and move the conflicting files/directories out of the way, then repeat the
-preview. Avoid `stow --adopt`: it imports the existing files into this repository
-and can overwrite the configuration you intended to deploy.
+If the preview reports conflicts, back up and move the conflicting files first.
+Do not use `--adopt` to overwrite the repository with existing configs.
 
-Optional editor/shell configurations use the same layout:
+### Before logging in
 
-```bash
-stow --simulate --verbose --target="$HOME" nvim vim bash
-# After reviewing conflicts:
-stow --verbose --target="$HOME" nvim vim bash
-```
+- Download a Nerd Font build from [IoskeleyMono releases](https://github.com/ahatem/IoskeleyMono/releases),
+  install the font files under `~/.local/share/fonts/`, then run `fc-cache -fv`.
+  Check the installed family name with `fc-list : family` and adjust the configs
+  if it differs from `IoskeleyMono Nerd Font`.
+- Adjust monitor names, resolutions, and scales in
+  `hypr/.config/hypr/hyprland.lua`.
+- Add `~/Pictures/1-scenery-pink.png`, or change the wallpaper paths in
+  `hyprpaper.conf` and `hyprlock.conf`. The image is not included; alternatives
+  are under `imgs/`.
+- Customize the Newsboat feeds and Waybar birthday script.
 
-Once linked, edits under `~/.config` update this checkout directly. A Fedora
-upgrade normally does not require linking again. The `install` and `setup` files
-are currently placeholders, not automated installation scripts.
+Select **Hyprland** at login. Waybar and hyprpaper start automatically.
 
-### 3. Check machine-specific settings
+### Neovim
 
-- **Monitors:** edit `hypr/.config/hypr/hyprland.lua`. The current setup uses
-  `eDP-1` (2880×1800 at 90 Hz, scale 2) and `HDMI-A-1` (2560×1080 at 144 Hz,
-  scale 1). Use `hyprctl monitors all` inside Hyprland to find actual output names
-  and modes. Workspace-to-monitor rules are currently commented out.
-- **Wallpaper:** put your image at `~/Pictures/1-scenery-pink.png`, or change the
-  paths in both `hyprpaper.conf` and `hyprlock.conf`. That image is **not included**
-  in this repository; alternative images are available under `imgs/`.
-- **Fonts:** install **IoskeleyMono Nerd Font** for Hyprland, Waybar, Kitty, Rofi,
-  and the lock screen, or change the font names in their configs. User fonts go
-  under `~/.local/share/fonts/`; run `fc-cache -fv`
-  after installing them. Nerd Font glyphs are used for bar icons.
-- **Waybar helpers:** customize birthdays in
-  `waybar/.config/waybar/scripts/bdays.sh` and feeds in
-  `newsboat/.config/newsboat/urls`. Audio clicks open `wiremix` in tmux, so keep a
-  tmux session running for that action (and the other tmux-based bar actions).
-
-### 4. Log in and verify
-
-Select Hyprland at login. The Lua startup hook launches Waybar and hyprpaper;
-do not also enable separate services for them, or they may run twice.
-
-```bash
-rpm -q hyprland hyprpaper waybar
-hyprctl configerrors
-hyprctl monitors
-pgrep -a -x waybar
-pgrep -a -x hyprpaper
-```
-
-Useful shortcuts: **Super+T** opens Kitty, **Super+D** opens Rofi,
-**Super+1…9 / Super+0** changes workspace, and **Print** copies a selected screen
-region to the clipboard. Run `hyprlock` to lock the screen; no automatic idle
-locking is configured here.
-
-### Upgrade troubleshooting
-
-- **Hyprland missing from the login menu:** check `dnf repolist --enabled` and
-  `rpm -q hyprland`, then restore the Copr/packages using step 1. Log out after
-  installation so the login manager can discover the session.
-- **Default wallpaper instead of my image:** hyprpaper 0.8.x uses
-  `wallpaper { monitor = ...; path = ...; }` blocks (see the actual multiline
-  config), not the old `preload` / `wallpaper = monitor,path` syntax. Check that
-  the image exists and run hyprpaper in a terminal to see errors. Stop the
-  existing instance with `pkill -x hyprpaper` before launching a replacement.
-- **Clicking workspace numbers does nothing:** Waybar 0.15.0's
-  `hyprland/workspaces` uses legacy IPC commands incompatible with Hyprland Lua
-  mode. This configuration uses **`ext/workspaces`** with `"on-click": "activate"`
-  instead; persistent workspaces are intentionally not configured.
-- **Old scripts fail to change workspace:** use Lua dispatcher syntax:
-  `hyprctl dispatch 'hl.dsp.focus({ workspace = 2 })'`, not
-  `hyprctl dispatch workspace 2`.
-- **Reload after editing:** `hyprctl reload` reloads Hyprland;
-  `pkill -SIGUSR2 -x waybar` reloads Waybar. Restart hyprpaper after editing its
-  configuration. Reloading Hyprland does not rerun the startup hook.
-
-## Neovim
-I use [Neovim](https://github.com/neovim/neovim) for the vast majority of my
-programming experience trying to have a very minimal set of plugins so to be
-able to use `vim` too.
-
-- junegunn/fzf;
-- williamboman/mason;
-- neovim/nvim-lspconfig;
-- williamboman/mason-lspconfig;
-- nvim-treesitter/nvim-treesitter;
-
-- nvim-lualine/lualine;
-- cameron-wags/rainbow_csv;
-
-To keep my typing skills useful in different environments I have a very small
-set of key remaps:
-
-- `<M-f>`: `vim.lsp.buf.format`;
-- `dq`: `:lua vim.diagnostic.setqflist()`;
-
-## Tmux
-Mainly using tmux as a terminal multiplexer.
-
-## Hyprland
-Wayland tiling compositor, configured in Lua with the scrolling layout.
-
-## Rofi
-Simple launcher with a black/white/gray palette. The theme file keeps the
-historical name `nord.rasi`, but no longer uses Nord accent colors.
-
-## Waybar
-Status bar for Hyprland, using `ext/workspaces` for clickable workspace buttons.
-
-## Kitty
-Kitty with a black background and grayscale interface, matching Rofi and tmux.
-The ANSI palette retains colors for readable command output, errors, and diffs.
+Open Neovim and run `:Lazy restore` to install the recorded plugin versions.
+Use `:Mason` to install language servers. Java needs a compatible JDK and JDTLS;
+the config expects Lombok at
+`~/.local/share/nvim/mason/packages/jdtls/lombok.jar`.
+Install Prettier for YAML formatting and SQLFluff for SQL linting if needed.
