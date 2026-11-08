@@ -1,16 +1,16 @@
 * {
-    bg-col:       #2e3440;
-    bg-col-light: #1c1c1d;
-    border-col:   #d8dee9;
-    selected-col: #81a1c1;
+    bg-col:       #101010;
+    bg-col-light: #202020;
+    border-col:   #d8d8d8;
+    selected-col: #d8d8d8;
 
-    blue:         #7aa4a1;
-    fg-col:       #eceff4;
-    fg-col2:      #2e3440;
-    grey:         #5c5d5e;
+    blue:         #d8d8d8;
+    fg-col:       #eeeeee;
+    fg-col2:      #101010;
+    grey:         #808080;
 
     width: 300;
-    font: "JetBrainsMono Nerd Font 14";
+    font: "IoskeleyMono Nerd Font 14";
 }
 
 element-text, element-icon {

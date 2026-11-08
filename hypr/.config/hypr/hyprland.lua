@@ -71,15 +71,15 @@ hl.env("HYPRCURSOR_SIZE", 24)
 
 hl.config({
     general = {
-        gaps_in = 5,
-        gaps_out = 10,
+        gaps_in = 3,
+        gaps_out = 5,
         border_size = 2,
         -- https://wiki.hyprland.org/Configuring/Variables/#variable-types for info about colors
         -- Set to true enable resizing windows by clicking and dragging on borders and gaps
         resize_on_border = false,
         -- Please see https://wiki.hyprland.org/Configuring/Tearing/ before you turn this on
         allow_tearing = false,
-        layout = "dwindle",
+        layout = "scrolling",
         col = {
             active_border = "rgba(d8dee9ff)",
             inactive_border = "rgba(595959aa)",
@@ -115,8 +115,23 @@ hl.config({
 
 hl.config({
     animations = {
-        enabled = false,
+        enabled = true,
     },
+})
+
+hl.animation({
+    leaf = "workspaces",
+    enabled = true,
+    speed = 2.4,
+    bezier = "default",
+})
+
+hl.animation({
+    leaf = "windows",
+    enabled = true,
+    speed = 4,
+    bezier = "default",
+    style = "slide",
 })
 
 -- See https://wiki.hyprland.org/Configuring/Dwindle-Layout/ for more
@@ -143,8 +158,9 @@ hl.config({
     misc = {
         force_default_wallpaper = 0,
         -- Set to 0 or 1 to disable the anime mascot wallpapers
-        disable_hyprland_logo = false,
+        disable_hyprland_logo = true,
         -- If true disables the random hyprland logo / anime girl background. :(
+        font_family = "IoskeleyMono Nerd Font",
     },
 })
 
@@ -186,7 +202,7 @@ local mainMod = "SUPER"
 
 -- Bind print screen to take a screenshot
 
-hl.bind("Print", hl.dsp.exec_cmd("grim -g \"$(slurp)\"-| wl-copy"))
+hl.bind("Print", hl.dsp.exec_cmd([[grim -g "$(slurp)" - | wl-copy]]))
 
 hl.bind(mainMod .. " + " .. "T", hl.dsp.exec_cmd("kitty"))
 
@@ -314,55 +330,55 @@ hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true 
 
 -- Setup workspace for specific monitors
 
-hl.workspace_rule({
-    workspace = 1,
-    monitor = "eDP-1",
-})
-
-hl.workspace_rule({
-    workspace = 2,
-    monitor = "eDP-1",
-})
-
-hl.workspace_rule({
-    workspace = 3,
-    monitor = "eDP-1",
-})
-
-hl.workspace_rule({
-    workspace = 4,
-    monitor = "eDP-1",
-})
-
-hl.workspace_rule({
-    workspace = 5,
-    monitor = "eDP-1",
-})
-
-hl.workspace_rule({
-    workspace = 6,
-    monitor = "eDP-1",
-})
-
-hl.workspace_rule({
-    workspace = 7,
-    monitor = "eDP-1",
-})
-
-hl.workspace_rule({
-    workspace = 8,
-    monitor = "HDMI-A-1",
-})
-
-hl.workspace_rule({
-    workspace = 9,
-    monitor = "HDMI-A-1",
-})
-
-hl.workspace_rule({
-    workspace = 0,
-    monitor = "HDMI-A-1",
-})
+-- hl.workspace_rule({
+--     workspace = 1,
+--     monitor = "eDP-1",
+-- })
+--
+-- hl.workspace_rule({
+--     workspace = 2,
+--     monitor = "eDP-1",
+-- })
+--
+-- hl.workspace_rule({
+--     workspace = 3,
+--     monitor = "eDP-1",
+-- })
+--
+-- hl.workspace_rule({
+--     workspace = 4,
+--     monitor = "eDP-1",
+-- })
+--
+-- hl.workspace_rule({
+--     workspace = 5,
+--     monitor = "eDP-1",
+-- })
+--
+-- hl.workspace_rule({
+--     workspace = 6,
+--     monitor = "eDP-1",
+-- })
+--
+-- hl.workspace_rule({
+--     workspace = 7,
+--     monitor = "eDP-1",
+-- })
+--
+-- hl.workspace_rule({
+--     workspace = 8,
+--     monitor = "HDMI-A-1",
+-- })
+--
+-- hl.workspace_rule({
+--     workspace = 9,
+--     monitor = "HDMI-A-1",
+-- })
+--
+-- hl.workspace_rule({
+--     workspace = 0,
+--     monitor = "HDMI-A-1",
+-- })
 
 -- See https://wiki.hyprland.org/Configuring/Window-Rules/ for more
 
